@@ -21,14 +21,13 @@ export class App extends React.Component<any, State> {
 
     this.spin = this.spin.bind(this);
     this.forceUpdate = this.forceUpdate.bind(this);
-    this.setLoadingFalse = this.setLoadingFalse.bind(this);
   }
 
   public render(): React.ReactNode {
-    const { pairs, isLoading } = this.state;
+    const { pairs } = this.state;
     return (
       <div>
-        <SlotGrid isLoading={isLoading} pairs={pairs} />
+        <SlotGrid pairs={pairs} />
         <Parameters credit={Credit.credit} />
         <button onClick={this.spin}>Spin!</button>
       </div>
@@ -36,12 +35,7 @@ export class App extends React.Component<any, State> {
   }
 
   private spin(): void {
-    this.setState({ isLoading: true });
     Spinners.spinAll(this.forceUpdate);
-    Spinners.randomUnspinAll(this.forceUpdate, this.setLoadingFalse);
-  }
-
-  private setLoadingFalse(): void {
-    this.setState({ isLoading: false });
+    Spinners.randomUnspinAll(this.forceUpdate);
   }
 }

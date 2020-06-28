@@ -1,9 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Pair, CardType } from '../cardConfigs';
 import { SlotCard } from './SlotCard';
 import { WinResult } from './WinResult';
-import { Credit } from '../creditConfigs';
+import { Pair, CardType } from '../cardConfigs';
 
 const RowWrapper = styled.div`
     width: 150px;
@@ -48,20 +47,12 @@ export interface Props {
     pair1: Pair;
     pair2: Pair;
     pair3: Pair;
-    isLoading: boolean;
 }
 
 export class SlotRow extends React.Component<Props> {
     public render(): React.ReactNode {
-        const { pair1, pair2, pair3, isLoading } = this.props;
+        const { pair1, pair2, pair3 } = this.props;
         const results = this.results();
-        if (results.isWin && !isLoading) {
-            // stake * coefficient calculation should NOT happen here
-            // it should not be per row, but per whole grid
-            console.log(Credit.credit);
-            Credit.credit += (Credit.stake * results.coefficient);
-            console.log(Credit.credit);
-        }
         return (
             <RowWrapper className={results.isWin ? 'pulse' : ''}>
                 <SlotCard pair={pair1} />

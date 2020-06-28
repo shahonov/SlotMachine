@@ -54,7 +54,7 @@ export class Spinners {
         forceUpdate();
     }
 
-    public static randomUnspinAll(forceUpdate: () => void, setLoadingFalse: () => void): void {
+    public static randomUnspinAll(forceUpdate: () => void): void {
         const timeout = 200;
         const indeces = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
         let interval = setInterval(() => {
@@ -70,7 +70,6 @@ export class Spinners {
 
         setTimeout(() => {
             clearInterval(interval);
-            setLoadingFalse();
         }, timeout * this.totalCards);
     }
 }
