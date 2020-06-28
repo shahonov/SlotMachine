@@ -7,10 +7,15 @@ export interface Props {
 
 export class SlotRow extends React.Component<Props> {
     public render(): React.ReactNode {
-        return (
-            <div>
-                <SlotColumn isLoading={true} />
-            </div>
-        );
+        return (this.generateColumns());
+    }
+
+    private generateColumns(): React.ReactNode {
+        const { count } = this.props;
+        const columns = [];
+        for (let i = 0; i < count; i++) {
+            columns.push(<SlotColumn isLoading={true} />);
+        }
+        return <>{columns}</>;
     }
 }

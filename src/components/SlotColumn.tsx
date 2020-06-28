@@ -11,6 +11,7 @@ const alts: string[] = ['apple', 'banana', 'wildcard', 'pineapple'];
 
 const Image = styled.img`
     width: 50px;
+    
     &.pulse {
         box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
         transform: scale(1);
