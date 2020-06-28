@@ -9,8 +9,7 @@ export class SlotRow extends React.Component<Props> {
     public render(): React.ReactNode {
         return (
             <div>
-                Slotty
-                <SlotColumn />
+                <SlotColumn isLoading={true} />
             </div>
         );
     }
