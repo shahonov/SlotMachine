@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { Configs } from './configs';
+import { Spinners, Pair } from './configs';
 import { SlotGrid } from './components/SlotGrid';
 
 export interface State {
-  rowsCount: number;
-  columnsCount: number;
+  pairs: Pair[];
 }
 
 export class App extends React.Component<any, State> {
@@ -13,20 +12,25 @@ export class App extends React.Component<any, State> {
     super(props);
 
     this.state = {
-      rowsCount: Configs.rowsCount,
-      columnsCount: Configs.columnsCount
-    }
+      pairs: Spinners.pairs
+    };
+
+    this.spin = this.spin.bind(this);
+    this.forceUpdate = this.forceUpdate.bind(this);
   }
 
   public render(): React.ReactNode {
-    const {
-      rowsCount,
-      columnsCount
-    } = this.state;
+    const { pairs } = this.state;
     return (
       <div>
-        <SlotGrid rowsCount={rowsCount} columnsCount={columnsCount} />
+        <SlotGrid pairs={pairs} />
+        <button onClick={this.spin}>Spin!</button>
       </div>
     );
+  }
+
+  private spin(): void {
+    Spinners.spinAll(this.forceUpdate);
+    Spinners.randomUnspinAll(this.forceUpdate);
   }
 }
