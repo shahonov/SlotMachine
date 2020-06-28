@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Pair } from '../configs';
-import { SlotColumn } from './SlotColumn';
+import { SlotCard } from './SlotCard';
 
 const RowWrapper = styled.div`
     &.win-row {
@@ -24,11 +24,16 @@ export class SlotRow extends React.Component<Props> {
     public render(): React.ReactNode {
         const { pair1, pair2, pair3 } = this.props;
         const results = this.results();
+        if (results.isWin) {
+            pair1.isWin = true;
+            pair2.isWin = true;
+            pair3.isWin = true;
+        }
         return (
             <RowWrapper className={results.isWin ? 'win-row' : ''}>
-                <SlotColumn pair={pair1} />
-                <SlotColumn pair={pair2} />
-                <SlotColumn pair={pair3} />
+                <SlotCard pair={pair1} />
+                <SlotCard pair={pair2} />
+                <SlotCard pair={pair3} />
             </RowWrapper>
         );
     }
@@ -73,10 +78,10 @@ export class SlotRow extends React.Component<Props> {
 
     private get isMatchWithOneWildcard(): boolean {
         const { pair1, pair2, pair3 } = this.props;
-        const isThirdCardWildcard = pair1.value === pair2.value && pair3.value === 'wildcard';
-        const isSecondCardWildcard = pair1.value === pair3.value && pair2.value === 'wildcard';
         const isFirstCardWildcard = pair2.value === pair3.value && pair1.value === 'wildcard';
-        return isThirdCardWildcard || isSecondCardWildcard || isThirdCardWildcard;
+        const isSecondCardWildcard = pair1.value === pair3.value && pair2.value === 'wildcard';
+        const isThirdCardWildcard = pair1.value === pair2.value && pair3.value === 'wildcard';
+        return isFirstCardWildcard || isSecondCardWildcard || isThirdCardWildcard;
     }
 
     private get isMatchWithTwoWildcards(): boolean {

@@ -1,9 +1,9 @@
 export type CardType = 'apple' | 'banana' | 'pineapple' | 'wildcard' | 'coin';
 
 export interface Pair {
-    index: number;
     isLoading: boolean;
     value: CardType;
+    isWin: boolean;
 }
 
 export class Spinners {
@@ -13,18 +13,18 @@ export class Spinners {
     private static totalRows = 4;
 
     public static pairs: Pair[] = [
-        { index: 0, isLoading: false, value: 'coin' },
-        { index: 1, isLoading: false, value: 'coin' },
-        { index: 2, isLoading: false, value: 'coin' },
-        { index: 3, isLoading: false, value: 'coin' },
-        { index: 4, isLoading: false, value: 'coin' },
-        { index: 5, isLoading: false, value: 'coin' },
-        { index: 6, isLoading: false, value: 'coin' },
-        { index: 7, isLoading: false, value: 'coin' },
-        { index: 8, isLoading: false, value: 'coin' },
-        { index: 9, isLoading: false, value: 'coin' },
-        { index: 10, isLoading: false, value: 'coin' },
-        { index: 11, isLoading: false, value: 'coin' }
+        { isWin: false, isLoading: false, value: 'coin' },
+        { isWin: false, isLoading: false, value: 'coin' },
+        { isWin: false, isLoading: false, value: 'coin' },
+        { isWin: false, isLoading: false, value: 'coin' },
+        { isWin: false, isLoading: false, value: 'coin' },
+        { isWin: false, isLoading: false, value: 'coin' },
+        { isWin: false, isLoading: false, value: 'coin' },
+        { isWin: false, isLoading: false, value: 'coin' },
+        { isWin: false, isLoading: false, value: 'coin' },
+        { isWin: false, isLoading: false, value: 'coin' },
+        { isWin: false, isLoading: false, value: 'coin' },
+        { isWin: false, isLoading: false, value: 'coin' }
     ];
 
     // handles probabilities of taking a random cards from the array

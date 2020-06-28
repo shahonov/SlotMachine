@@ -10,11 +10,18 @@ import pineapple from '../assets/pineapple.svg';
 const Image = styled.img`
     width: 50px;
 
+    &.win-card {
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+        transform: scale(1);
+        border-radius: 50px;
+        animation: pulse 1s infinite;
+    }
+
     &.pulse {
         box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
         transform: scale(1);
         border-radius: 50px;
-        animation: pulse 2s infinite;
+        animation: pulse 1s infinite;
     }
 
     @keyframes pulse {
@@ -39,13 +46,13 @@ export interface Props {
     pair: Pair;
 }
 
-export class SlotColumn extends React.Component<Props> {
+export class SlotCard extends React.Component<Props> {
     public render(): React.ReactNode {
         const { pair } = this.props;
         const src = pair.isLoading ? coin : this.getSrc();
         const alt = pair.isLoading ? 'coin' : pair.value;
         return (
-            <Image className={pair.isLoading ? 'pulse' : ''} src={src} alt={alt} />
+            <Image className={pair.isLoading ? 'pulse' : pair.isWin ? 'win-card' : ''} src={src} alt={alt} />
         );
     }
 
