@@ -1,9 +1,10 @@
+import { Credit } from "./creditConfigs";
+
 export type CardType = 'apple' | 'banana' | 'pineapple' | 'wildcard' | 'coin';
 
 export interface Pair {
     isLoading: boolean;
     value: CardType;
-    isWin: boolean;
 }
 
 export class Spinners {
@@ -13,18 +14,18 @@ export class Spinners {
     private static totalRows = 4;
 
     public static pairs: Pair[] = [
-        { isWin: false, isLoading: false, value: 'coin' },
-        { isWin: false, isLoading: false, value: 'coin' },
-        { isWin: false, isLoading: false, value: 'coin' },
-        { isWin: false, isLoading: false, value: 'coin' },
-        { isWin: false, isLoading: false, value: 'coin' },
-        { isWin: false, isLoading: false, value: 'coin' },
-        { isWin: false, isLoading: false, value: 'coin' },
-        { isWin: false, isLoading: false, value: 'coin' },
-        { isWin: false, isLoading: false, value: 'coin' },
-        { isWin: false, isLoading: false, value: 'coin' },
-        { isWin: false, isLoading: false, value: 'coin' },
-        { isWin: false, isLoading: false, value: 'coin' }
+        { isLoading: false, value: 'coin' },
+        { isLoading: false, value: 'coin' },
+        { isLoading: false, value: 'coin' },
+        { isLoading: false, value: 'coin' },
+        { isLoading: false, value: 'coin' },
+        { isLoading: false, value: 'coin' },
+        { isLoading: false, value: 'coin' },
+        { isLoading: false, value: 'coin' },
+        { isLoading: false, value: 'coin' },
+        { isLoading: false, value: 'coin' },
+        { isLoading: false, value: 'coin' },
+        { isLoading: false, value: 'coin' }
     ];
 
     // handles probabilities of taking a random cards from the array
@@ -49,10 +50,11 @@ export class Spinners {
             x.isLoading = true;
             x.value = 'coin';
         });
+        Credit.credit -= Credit.stake;
         forceUpdate();
     }
 
-    public static randomUnspinAll(forceUpdate: () => void): void {
+    public static randomUnspinAll(forceUpdate: () => void, setLoadingFalse: () => void): void {
         const timeout = 200;
         const indeces = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
         let interval = setInterval(() => {
@@ -68,6 +70,7 @@ export class Spinners {
 
         setTimeout(() => {
             clearInterval(interval);
+            setLoadingFalse();
         }, timeout * this.totalCards);
     }
 }

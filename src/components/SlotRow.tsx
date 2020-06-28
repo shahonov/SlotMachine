@@ -1,13 +1,43 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Pair } from '../configs';
+import { Pair, CardType } from '../cardConfigs';
 import { SlotCard } from './SlotCard';
+import { WinResult } from './WinResult';
+import { Credit } from '../creditConfigs';
 
 const RowWrapper = styled.div`
-    &.win-row {
-        background-color: lightgreen;
+    width: 150px;
+
+    &.pulse {
+        width: 250px;
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+        transform: scale(1);
+        border-radius: 50px;
+        animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+        }
+    
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 5px rgba(0, 0, 0, 0);
+        }
+    
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        }
     }
 `;
+
+const coefficients: Map<CardType, number> = new Map();
+coefficients.set('apple', 0.4);
+coefficients.set('banana', 0.6);
+coefficients.set('pineapple', 0.8);
 
 export interface Results {
     isWin: boolean;
@@ -18,22 +48,26 @@ export interface Props {
     pair1: Pair;
     pair2: Pair;
     pair3: Pair;
+    isLoading: boolean;
 }
 
 export class SlotRow extends React.Component<Props> {
     public render(): React.ReactNode {
-        const { pair1, pair2, pair3 } = this.props;
+        const { pair1, pair2, pair3, isLoading } = this.props;
         const results = this.results();
-        if (results.isWin) {
-            pair1.isWin = true;
-            pair2.isWin = true;
-            pair3.isWin = true;
+        if (results.isWin && !isLoading) {
+            // stake * coefficient calculation should NOT happen here
+            // it should not be per row, but per whole grid
+            console.log(Credit.credit);
+            Credit.credit += (Credit.stake * results.coefficient);
+            console.log(Credit.credit);
         }
         return (
-            <RowWrapper className={results.isWin ? 'win-row' : ''}>
+            <RowWrapper className={results.isWin ? 'pulse' : ''}>
                 <SlotCard pair={pair1} />
                 <SlotCard pair={pair2} />
                 <SlotCard pair={pair3} />
+                {results.isWin && <WinResult coefficient={results.coefficient} />}
             </RowWrapper>
         );
     }
@@ -44,26 +78,90 @@ export class SlotRow extends React.Component<Props> {
         }
 
         if (this.isAllWildcards) {
-            // RETURN 0 COEFFICIENT
             return { isWin: true, coefficient: 0 };
         }
 
         if (this.isAllCardsEqual) {
-            // CHECK TYPE OF CARDS AND RETURN COEFFICIENT X3
-            return { isWin: true, coefficient: 0 };
+            const multiplier = 3;
+            if (this.isApple) {
+                //@ts-ignore
+                const coef = +(coefficients.get('apple') * multiplier).toFixed(2);
+                return { isWin: true, coefficient: coef };
+            } else if (this.isBanana) {
+                //@ts-ignore
+                const coef = +(coefficients.get('banana') * multiplier).toFixed(2);
+                return { isWin: true, coefficient: coef };
+            } else if (this.isPineapple) {
+                //@ts-ignore
+                const coef = +(coefficients.get('pineapple') * multiplier).toFixed(2);
+                return { isWin: true, coefficient: coef };
+            } else {
+                return { isWin: true, coefficient: 0 };
+            }
         }
 
         if (this.isMatchWithOneWildcard) {
-            // CHECK TYPE OF CARDS AND RETURN COEFFICIENT X2
-            return { isWin: true, coefficient: 0 };
+            const multiplier = 2;
+            if (this.isApple) {
+                //@ts-ignore
+                const coef = +(coefficients.get('apple') * multiplier).toFixed(2);
+                return { isWin: true, coefficient: coef };
+            } else if (this.isBanana) {
+                //@ts-ignore
+                const coef = +(coefficients.get('banana') * multiplier).toFixed(2);
+                return { isWin: true, coefficient: coef };
+            } else if (this.isPineapple) {
+                //@ts-ignore
+                const coef = +(coefficients.get('pineapple') * multiplier).toFixed(2);
+                return { isWin: true, coefficient: coef };
+            } else {
+                return { isWin: true, coefficient: 0 };
+            }
         }
 
         if (this.isMatchWithTwoWildcards) {
-            // CHECK TYPE OF CARDS AND RETURN COEFFICIENT X1
-            return { isWin: true, coefficient: 0 };
+            if (this.isApple) {
+                const coef = coefficients.get('apple');
+                //@ts-ignore
+                return { isWin: true, coefficient: coef };
+            } else if (this.isBanana) {
+                const coef = coefficients.get('banana');
+                //@ts-ignore
+                return { isWin: true, coefficient: coef };
+            } else if (this.isPineapple) {
+                const coef = coefficients.get('pineapple');
+                //@ts-ignore
+                return { isWin: true, coefficient: coef };
+            } else {
+                return { isWin: true, coefficient: 0 };
+            }
         }
 
         return { isWin: false, coefficient: 0 };
+    }
+
+    private get isApple(): boolean {
+        const { pair1, pair2, pair3 } = this.props;
+        const isApple1 = pair1.value === 'apple';
+        const isApple2 = pair2.value === 'apple';
+        const isApple3 = pair3.value === 'apple';
+        return isApple1 || isApple2 || isApple3;
+    }
+
+    private get isBanana(): boolean {
+        const { pair1, pair2, pair3 } = this.props;
+        const isBanana1 = pair1.value === 'banana';
+        const isBanana2 = pair2.value === 'banana';
+        const isBanana3 = pair3.value === 'banana';
+        return isBanana1 || isBanana2 || isBanana3;
+    }
+
+    private get isPineapple(): boolean {
+        const { pair1, pair2, pair3 } = this.props;
+        const isPineapple1 = pair1.value === 'pineapple';
+        const isPineapple2 = pair2.value === 'pineapple';
+        const isPineapple3 = pair3.value === 'pineapple';
+        return isPineapple1 || isPineapple2 || isPineapple3;
     }
 
     private get isCoins(): boolean {
