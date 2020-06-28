@@ -9,6 +9,11 @@ const RowWrapper = styled.div`
     }
 `;
 
+export interface Results {
+    isWin: boolean;
+    coefficient: number;
+}
+
 export interface Props {
     pair1: Pair;
     pair2: Pair;
@@ -18,8 +23,9 @@ export interface Props {
 export class SlotRow extends React.Component<Props> {
     public render(): React.ReactNode {
         const { pair1, pair2, pair3 } = this.props;
+        const results = this.results();
         return (
-            <RowWrapper className={this.isWinRow ? 'win-row' : ''}>
+            <RowWrapper className={results.isWin ? 'win-row' : ''}>
                 <SlotColumn pair={pair1} />
                 <SlotColumn pair={pair2} />
                 <SlotColumn pair={pair3} />
@@ -27,11 +33,62 @@ export class SlotRow extends React.Component<Props> {
         );
     }
 
-    private get isWinRow(): boolean {
-        const { pair1, pair2, pair3 } = this.props;
-        if (pair1.value === 'coin') {
-            return false;
+    private results(): Results {
+        if (this.isCoins) {
+            return { isWin: false, coefficient: 0 };
         }
-        return pair1.value === pair2.value && pair1.value === pair3.value;
+
+        if (this.isAllWildcards) {
+            // RETURN 0 COEFFICIENT
+            return { isWin: true, coefficient: 0 };
+        }
+
+        if (this.isAllCardsEqual) {
+            // CHECK TYPE OF CARDS AND RETURN COEFFICIENT X3
+            return { isWin: true, coefficient: 0 };
+        }
+
+        if (this.isMatchWithOneWildcard) {
+            // CHECK TYPE OF CARDS AND RETURN COEFFICIENT X2
+            return { isWin: true, coefficient: 0 };
+        }
+
+        if (this.isMatchWithTwoWildcards) {
+            // CHECK TYPE OF CARDS AND RETURN COEFFICIENT X1
+            return { isWin: true, coefficient: 0 };
+        }
+
+        return { isWin: false, coefficient: 0 };
+    }
+
+    private get isCoins(): boolean {
+        const { pair1, pair2, pair3 } = this.props;
+        return pair1.value === 'coin' || pair2.value === 'coin' || pair3.value === 'coin';
+    }
+
+    private get isAllCardsEqual(): boolean {
+        const { pair1, pair2, pair3 } = this.props;
+        return pair1.value === pair2.value && pair1.value === pair3.value
+    }
+
+    private get isMatchWithOneWildcard(): boolean {
+        const { pair1, pair2, pair3 } = this.props;
+        const isThirdCardWildcard = pair1.value === pair2.value && pair3.value === 'wildcard';
+        const isSecondCardWildcard = pair1.value === pair3.value && pair2.value === 'wildcard';
+        const isFirstCardWildcard = pair2.value === pair3.value && pair1.value === 'wildcard';
+        return isThirdCardWildcard || isSecondCardWildcard || isThirdCardWildcard;
+    }
+
+    private get isMatchWithTwoWildcards(): boolean {
+        const { pair1, pair2, pair3 } = this.props;
+        const isFirstSecondCardWildcard = pair1.value === 'wildcard' && pair2.value === 'wildcard';
+        const isSecondThirdCardWildcard = pair2.value === 'wildcard' && pair3.value === 'wildcard';
+        const isFirstThirdCardWildcard = pair1.value === 'wildcard' && pair3.value === 'wildcard';
+        return isFirstSecondCardWildcard || isSecondThirdCardWildcard || isFirstThirdCardWildcard;
+    }
+
+    private get isAllWildcards(): boolean {
+        const { pair1, pair2, pair3 } = this.props;
+        return pair1.value === 'wildcard' && pair2.value === 'wildcard' && pair3.value === 'wildcard';
     }
 }
