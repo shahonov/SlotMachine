@@ -32,13 +32,19 @@ export class App extends React.Component<any, State> {
 
   public render(): React.ReactNode {
     const { cardsInfo } = this.state;
+
     return (
       <div>
         <SlotGrid cardsInfo={cardsInfo} />
+        <div>Win coefficient: {this.isAllRevealed ? cardsInfo.totalWinCoefficient : 'click spin...'}</div>
         <button onClick={this.spin}>Spin!</button>
         <button onClick={this.reload}>Reload</button>
       </div>
     );
+  }
+
+  private get isAllRevealed(): boolean {
+    return this.state.cardsInfo.cards.every(x => !x.isLoading);
   }
 
   private spin(): void {

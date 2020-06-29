@@ -42,21 +42,21 @@ export interface Props {
     card1: Card;
     card2: Card;
     card3: Card;
-    isWin: boolean;
+    coefficient: number;
 }
 
 export class SlotRow extends React.Component<Props> {
 
     public render(): React.ReactNode {
-        const { card1, card2, card3, isWin } = this.props;
+        const { card1, card2, card3, coefficient } = this.props;
         const isLoading = card1.isLoading || card2.isLoading || card3.isLoading;
-        const isWinRow = !isLoading && isWin;
+        const isWinRow = !isLoading && coefficient > 0;
         return (
-            <RowWrapper>
+            <RowWrapper className={isWinRow ? 'pulse' : ''}>
                 <SlotCard card={card1} />
                 <SlotCard card={card2} />
                 <SlotCard card={card3} />
-                {isWinRow && <WinResult />}
+                {isWinRow && <WinResult coefficient={coefficient} />}
             </RowWrapper>
         );
     }

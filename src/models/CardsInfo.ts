@@ -11,12 +11,22 @@ export class CardsInfo {
 
     public cards: Card[];
 
+    public get totalWinCoefficient(): number {
+        const coefficient = (
+            this.row1Coefficient +
+            this.row2Coefficient +
+            this.row3Coefficient +
+            this.row4Coefficient
+        );
+        return +coefficient.toFixed(2);
+    }
+
     public get row1Coefficient(): number {
         const card1 = this.cards[0];
         const card2 = this.cards[1];
         const card3 = this.cards[2];
         const coefficient = this.getCoefficient(card1, card2, card3);
-        return coefficient;
+        return +coefficient.toFixed(2);
     }
 
     public get row2Coefficient(): number {
@@ -24,7 +34,7 @@ export class CardsInfo {
         const card2 = this.cards[4];
         const card3 = this.cards[5];
         const coefficient = this.getCoefficient(card1, card2, card3);
-        return coefficient;
+        return +coefficient.toFixed(2);
     }
 
     public get row3Coefficient(): number {
@@ -32,7 +42,7 @@ export class CardsInfo {
         const card2 = this.cards[7];
         const card3 = this.cards[8];
         const coefficient = this.getCoefficient(card1, card2, card3);
-        return coefficient;
+        return +coefficient.toFixed(2);
     }
 
     public get row4Coefficient(): number {
@@ -40,7 +50,7 @@ export class CardsInfo {
         const card2 = this.cards[10];
         const card3 = this.cards[11];
         const coefficient = this.getCoefficient(card1, card2, card3);
-        return coefficient;
+        return +coefficient.toFixed(2);
     }
 
     public getCoefficient(card1: Card, card2: Card, card3: Card): number {

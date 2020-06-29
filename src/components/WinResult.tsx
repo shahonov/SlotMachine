@@ -33,14 +33,15 @@ const Coefficient = styled.span`
 `;
 
 export interface Props {
-    
+    coefficient: number;
 }
 
 export class WinResult extends React.Component<Props> {
     public render(): React.ReactNode {
+        const { coefficient } = this.props;
         return (
             <>
-                <Coefficient>2</Coefficient>
+                <Coefficient>{coefficient}</Coefficient>
                 <Icon src={cash} alt={'cash'} />
             </>
         );
