@@ -1,41 +1,47 @@
 import * as React from 'react';
-import { Spinners, Pair } from './cardConfigs';
+import { CardsInfo } from './models/CardsInfo';
 import { SlotGrid } from './components/SlotGrid';
-import { Parameters } from './components/Parameters';
-import { Credit } from './creditConfigs';
+import { CardsGenerator } from './logic/CardsGenerator';
+
+export interface SpinResults {
+  isRowWin: boolean;
+  coefficient: number;
+}
 
 export interface State {
-  pairs: Pair[];
-  isLoading: boolean;
+  cardsInfo: CardsInfo;
 }
 
 export class App extends React.Component<any, State> {
 
+  private readonly cardsGenerator: CardsGenerator;
+
   constructor(props: any) {
     super(props);
 
+    this.cardsGenerator = new CardsGenerator();
+    const cardsInfo = this.cardsGenerator.generate(12);
     this.state = {
-      pairs: Spinners.pairs,
-      isLoading: false
+      cardsInfo: cardsInfo
     };
 
     this.spin = this.spin.bind(this);
-    this.forceUpdate = this.forceUpdate.bind(this);
   }
 
   public render(): React.ReactNode {
-    const { pairs } = this.state;
+    const { cardsInfo } = this.state;
     return (
       <div>
-        <SlotGrid pairs={pairs} />
-        <Parameters credit={Credit.credit} />
+        <SlotGrid cardsInfo={cardsInfo} />
         <button onClick={this.spin}>Spin!</button>
       </div>
     );
   }
 
   private spin(): void {
-    Spinners.spinAll(this.forceUpdate);
-    Spinners.randomUnspinAll(this.forceUpdate);
+    const newCardsInfo = this.cardsGenerator.generate(12);
+    this.setState({
+      cardsInfo: newCardsInfo
+    });
   }
 }

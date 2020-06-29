@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Credit } from '../creditConfigs';
 import { Icon } from '../styled-components/Icon';
 import increateStake from '../assets/increase-stake.svg';
 import decreaseStake from '../assets/decrease-stake.svg';
@@ -44,19 +43,15 @@ export class Parameters extends React.Component<Props> {
                 <Input readOnly={true} value={credit} />
                 <Label>Stake: </Label>
                 <SmallIcon src={decreaseStake} alt={'decrease-stake'} onClick={this.decreaseStake} />
-                <Input readOnly={true} value={Credit.stake} />
+                <Input readOnly={true} value={0} />
                 <SmallIcon src={increateStake} alt={'increase-stake'} onClick={this.increaseStake} />
             </>
         );
     }
 
     private increaseStake(): void {
-        Credit.stake += 5;
-        this.forceUpdate();
     }
 
     private decreaseStake(): void {
-        Credit.stake -= 5;
-        this.forceUpdate();
     }
 }

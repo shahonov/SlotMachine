@@ -1,20 +1,25 @@
 import * as React from 'react';
-import { Pair } from '../cardConfigs';
 import { SlotRow } from './SlotRow';
+import { CardsInfo } from '../models/CardsInfo';
 
 export interface Props {
-    pairs: Pair[];
+    cardsInfo: CardsInfo;
 }
 
 export class SlotGrid extends React.Component<Props> {
     public render(): React.ReactNode {
-        const { pairs } = this.props;
+        const { cardsInfo } = this.props;
+        const { cards } = cardsInfo;
         return (
             <div>
-                <SlotRow pair1={pairs[0]} pair2={pairs[1]} pair3={pairs[2]} />
-                <SlotRow pair1={pairs[3]} pair2={pairs[4]} pair3={pairs[5]} />
-                <SlotRow pair1={pairs[6]} pair2={pairs[7]} pair3={pairs[8]} />
-                <SlotRow pair1={pairs[9]} pair2={pairs[10]} pair3={pairs[11]} />
+                <SlotRow isWin={cardsInfo.row1Coefficient > 0}
+                    card1={cards[0]} card2={cards[1]} card3={cards[2]} />
+                <SlotRow isWin={cardsInfo.row2Coefficient > 0}
+                    card1={cards[3]} card2={cards[4]} card3={cards[5]} />
+                <SlotRow isWin={cardsInfo.row3Coefficient > 0}
+                    card1={cards[6]} card2={cards[7]} card3={cards[8]} />
+                <SlotRow isWin={cardsInfo.row4Coefficient > 0}
+                    card1={cards[9]} card2={cards[10]} card3={cards[11]} />
             </div>
         );
     }

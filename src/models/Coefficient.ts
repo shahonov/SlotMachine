@@ -1,0 +1,1 @@
+export type Coefficient = 0.4 | 0.6 | 0.8 | 0;

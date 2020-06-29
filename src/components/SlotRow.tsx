@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { SlotCard } from './SlotCard';
 import { WinResult } from './WinResult';
-import { Pair, CardType } from '../cardConfigs';
+import { Card } from '../models/Card';
 
 const RowWrapper = styled.div`
     width: 150px;
@@ -33,156 +33,31 @@ const RowWrapper = styled.div`
     }
 `;
 
-const coefficients: Map<CardType, number> = new Map();
-coefficients.set('apple', 0.4);
-coefficients.set('banana', 0.6);
-coefficients.set('pineapple', 0.8);
-
 export interface Results {
     isWin: boolean;
     coefficient: number;
 }
 
 export interface Props {
-    pair1: Pair;
-    pair2: Pair;
-    pair3: Pair;
+    card1: Card;
+    card2: Card;
+    card3: Card;
+    isWin: boolean;
 }
 
 export class SlotRow extends React.Component<Props> {
+
     public render(): React.ReactNode {
-        const { pair1, pair2, pair3 } = this.props;
-        const results = this.results();
+        const { card1, card2, card3, isWin } = this.props;
+        const isLoading = card1.isLoading || card2.isLoading || card3.isLoading;
+        const isWinRow = !isLoading && isWin;
         return (
-            <RowWrapper className={results.isWin ? 'pulse' : ''}>
-                <SlotCard pair={pair1} />
-                <SlotCard pair={pair2} />
-                <SlotCard pair={pair3} />
-                {results.isWin && <WinResult coefficient={results.coefficient} />}
+            <RowWrapper>
+                <SlotCard card={card1} />
+                <SlotCard card={card2} />
+                <SlotCard card={card3} />
+                {isWinRow && <WinResult />}
             </RowWrapper>
         );
-    }
-
-    private results(): Results {
-        if (this.isCoins) {
-            return { isWin: false, coefficient: 0 };
-        }
-
-        if (this.isAllWildcards) {
-            return { isWin: true, coefficient: 0 };
-        }
-
-        if (this.isAllCardsEqual) {
-            const multiplier = 3;
-            if (this.isApple) {
-                //@ts-ignore
-                const coef = +(coefficients.get('apple') * multiplier).toFixed(2);
-                return { isWin: true, coefficient: coef };
-            } else if (this.isBanana) {
-                //@ts-ignore
-                const coef = +(coefficients.get('banana') * multiplier).toFixed(2);
-                return { isWin: true, coefficient: coef };
-            } else if (this.isPineapple) {
-                //@ts-ignore
-                const coef = +(coefficients.get('pineapple') * multiplier).toFixed(2);
-                return { isWin: true, coefficient: coef };
-            } else {
-                return { isWin: true, coefficient: 0 };
-            }
-        }
-
-        if (this.isMatchWithOneWildcard) {
-            const multiplier = 2;
-            if (this.isApple) {
-                //@ts-ignore
-                const coef = +(coefficients.get('apple') * multiplier).toFixed(2);
-                return { isWin: true, coefficient: coef };
-            } else if (this.isBanana) {
-                //@ts-ignore
-                const coef = +(coefficients.get('banana') * multiplier).toFixed(2);
-                return { isWin: true, coefficient: coef };
-            } else if (this.isPineapple) {
-                //@ts-ignore
-                const coef = +(coefficients.get('pineapple') * multiplier).toFixed(2);
-                return { isWin: true, coefficient: coef };
-            } else {
-                return { isWin: true, coefficient: 0 };
-            }
-        }
-
-        if (this.isMatchWithTwoWildcards) {
-            if (this.isApple) {
-                const coef = coefficients.get('apple');
-                //@ts-ignore
-                return { isWin: true, coefficient: coef };
-            } else if (this.isBanana) {
-                const coef = coefficients.get('banana');
-                //@ts-ignore
-                return { isWin: true, coefficient: coef };
-            } else if (this.isPineapple) {
-                const coef = coefficients.get('pineapple');
-                //@ts-ignore
-                return { isWin: true, coefficient: coef };
-            } else {
-                return { isWin: true, coefficient: 0 };
-            }
-        }
-
-        return { isWin: false, coefficient: 0 };
-    }
-
-    private get isApple(): boolean {
-        const { pair1, pair2, pair3 } = this.props;
-        const isApple1 = pair1.value === 'apple';
-        const isApple2 = pair2.value === 'apple';
-        const isApple3 = pair3.value === 'apple';
-        return isApple1 || isApple2 || isApple3;
-    }
-
-    private get isBanana(): boolean {
-        const { pair1, pair2, pair3 } = this.props;
-        const isBanana1 = pair1.value === 'banana';
-        const isBanana2 = pair2.value === 'banana';
-        const isBanana3 = pair3.value === 'banana';
-        return isBanana1 || isBanana2 || isBanana3;
-    }
-
-    private get isPineapple(): boolean {
-        const { pair1, pair2, pair3 } = this.props;
-        const isPineapple1 = pair1.value === 'pineapple';
-        const isPineapple2 = pair2.value === 'pineapple';
-        const isPineapple3 = pair3.value === 'pineapple';
-        return isPineapple1 || isPineapple2 || isPineapple3;
-    }
-
-    private get isCoins(): boolean {
-        const { pair1, pair2, pair3 } = this.props;
-        return pair1.value === 'coin' || pair2.value === 'coin' || pair3.value === 'coin';
-    }
-
-    private get isAllCardsEqual(): boolean {
-        const { pair1, pair2, pair3 } = this.props;
-        return pair1.value === pair2.value && pair1.value === pair3.value
-    }
-
-    private get isMatchWithOneWildcard(): boolean {
-        const { pair1, pair2, pair3 } = this.props;
-        const isFirstCardWildcard = pair2.value === pair3.value && pair1.value === 'wildcard';
-        const isSecondCardWildcard = pair1.value === pair3.value && pair2.value === 'wildcard';
-        const isThirdCardWildcard = pair1.value === pair2.value && pair3.value === 'wildcard';
-        return isFirstCardWildcard || isSecondCardWildcard || isThirdCardWildcard;
-    }
-
-    private get isMatchWithTwoWildcards(): boolean {
-        const { pair1, pair2, pair3 } = this.props;
-        const isFirstSecondCardWildcard = pair1.value === 'wildcard' && pair2.value === 'wildcard';
-        const isSecondThirdCardWildcard = pair2.value === 'wildcard' && pair3.value === 'wildcard';
-        const isFirstThirdCardWildcard = pair1.value === 'wildcard' && pair3.value === 'wildcard';
-        return isFirstSecondCardWildcard || isSecondThirdCardWildcard || isFirstThirdCardWildcard;
-    }
-
-    private get isAllWildcards(): boolean {
-        const { pair1, pair2, pair3 } = this.props;
-        return pair1.value === 'wildcard' && pair2.value === 'wildcard' && pair3.value === 'wildcard';
     }
 }
