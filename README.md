@@ -1,44 +1,43 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Slot Machine
 
-## Available Scripts
+Basic slot machine app, written on React with TypeScipt
 
-In the project directory, you can run:
+## How to run
 
-### `npm start`
+ * In order to run the app:
+  1. Node.js is required
+  1. Clone the repository
+  1. Run 'npm install' in the local folder
+  1. Await node to install packages
+  1. Run 'npm start' in the local folder to start the app
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## App options
+ * **at the beginning** you will have **100 funds** and **stake of 10**
+ * for each spin the engine is withdrawing selected stake from your funds
+ * when your funds are not enough for the next spin - *the spin button will be disabled*
+ * you can deposit more funds from the top options
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Win Pool
+ * There is 4 types of active cards:
+  1. Apple - **45% probability** to appear
+  1. Banana - **35% probability** to appear
+  1. Pineapple - **15% probability** to appear
+  1. Wildcard - **5% probability** to appear
 
-### `npm test`
+#### To win a spin there should be same card types matched on the rows (multiple row matches are enabled)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+ * There is three possible win combinations:
+  1. All any type cards equal
+  1. Two any type cards equal + one wildcard
+  1. One any type card + two wildcards
 
-### `npm run build`
+ * Each card type holds different coefficient when matched:
+  * Apple - 0.4
+  * Banana - 0.6
+  * Pineapple - 0.8
+  * Wildcard - 0
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+ * Examples:
+  * Apple, Apple, Apple - 0.4, 0.4, 0.4 = 1.2 coefficient
+  * Apple, Wildcard, Apple - 0.4, 0, 0.4 = 0.8 coefficient
+  * Apple, Wildcard, Wildcard - 0.4, 0, 0 = 0.4 coefficient
