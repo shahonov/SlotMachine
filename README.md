@@ -32,12 +32,12 @@ Basic slot machine app, written on React with TypeScipt
   1. One any type card + two wildcards
 
  * Each card type holds different coefficient when matched:
-  * Apple - 0.4
-  * Banana - 0.6
-  * Pineapple - 0.8
-  * Wildcard - 0
+  1. Apple - 0.4
+  1. Banana - 0.6
+  1. Pineapple - 0.8
+  1. Wildcard - 0
 
  * Examples:
-  * Apple, Apple, Apple - 0.4, 0.4, 0.4 = 1.2 coefficient
-  * Apple, Wildcard, Apple - 0.4, 0, 0.4 = 0.8 coefficient
-  * Apple, Wildcard, Wildcard - 0.4, 0, 0 = 0.4 coefficient
+  1. Apple, Apple, Apple - 0.4, 0.4, 0.4 = 1.2 coefficient
+  1. Apple, Wildcard, Apple - 0.4, 0, 0.4 = 0.8 coefficient
+  1. Apple, Wildcard, Wildcard - 0.4, 0, 0 = 0.4 coefficient
