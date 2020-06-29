@@ -1,8 +1,15 @@
 import * as React from 'react';
+import styled from 'styled-components';
+import { Card } from './models/Card';
+import { TopBar } from './components/TopBar';
 import { CardsInfo } from './models/CardsInfo';
 import { SlotGrid } from './components/SlotGrid';
 import { CardsGenerator } from './logic/CardsGenerator';
-import { Card } from './models/Card';
+import { CenterFlex } from './styled-components/Containters';
+
+const Wrapper = styled(CenterFlex)`
+  
+`;
 
 export interface SpinResults {
   isRowWin: boolean;
@@ -34,12 +41,11 @@ export class App extends React.Component<any, State> {
     const { cardsInfo } = this.state;
 
     return (
-      <div>
-        <SlotGrid cardsInfo={cardsInfo} />
+      <Wrapper>
+        <TopBar />
+        <SlotGrid spin={this.spin} reload={this.reload} cardsInfo={cardsInfo} />
         <div>Win coefficient: {this.isAllRevealed ? cardsInfo.totalWinCoefficient : 'click spin...'}</div>
-        <button onClick={this.spin}>Spin!</button>
-        <button onClick={this.reload}>Reload</button>
-      </div>
+      </Wrapper>
     );
   }
 

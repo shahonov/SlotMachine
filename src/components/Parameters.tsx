@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Icon } from '../styled-components/Icon';
+import { IconPulse } from '../styled-components/Icons';
 import increateStake from '../assets/increase-stake.svg';
 import decreaseStake from '../assets/decrease-stake.svg';
 
@@ -14,7 +14,7 @@ const Input = styled.input`
     text-align: center;
 `;
 
-const SmallIcon = styled(Icon)`
+const SmallIcon = styled(IconPulse)`
     width: 25px;
     margin-bottom: -6px;
     &:hover {

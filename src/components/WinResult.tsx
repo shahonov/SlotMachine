@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import cash from '../assets/cash.svg';
-import { Icon } from '../styled-components/Icon';
+import { IconPulse } from '../styled-components/Icons';
 
 const Coefficient = styled.span`
     padding: 5px;
@@ -42,7 +42,7 @@ export class WinResult extends React.Component<Props> {
         return (
             <>
                 <Coefficient>{coefficient}</Coefficient>
-                <Icon src={cash} alt={'cash'} />
+                <IconPulse src={cash} alt={'cash'} />
             </>
         );
     }

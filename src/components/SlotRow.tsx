@@ -1,14 +1,13 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { Card } from '../models/Card';
 import { SlotCard } from './SlotCard';
 import { WinResult } from './WinResult';
-import { Card } from '../models/Card';
 
 const RowWrapper = styled.div`
-    width: 150px;
+    width: 250px;
 
     &.pulse {
-        width: 250px;
         box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
         transform: scale(1);
         border-radius: 50px;

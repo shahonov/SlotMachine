@@ -1,9 +1,7 @@
 import { Card } from "../models/Card";
 import { CardType } from "../models/CardType";
-import { Coefficient } from "../models/Coefficient";
 import { CardsInfo } from "../models/CardsInfo";
-
-
+import { Coefficient } from "../models/Coefficient";
 
 export class CardsGenerator {
 
