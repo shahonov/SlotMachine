@@ -10,7 +10,7 @@ import { BottomBar } from './components/BottomBar';
 import { Player } from './models/Player';
 
 const Wrapper = styled(CenterFlex)`
-  
+  margin-top: 50px;
 `;
 
 export interface State {
@@ -27,7 +27,7 @@ export class App extends React.Component<any, State> {
 
     this.cardsGenerator = new CardsGenerator();
     const cardsInfo = this.cardsGenerator.generate(12);
-    const player = new Player(0, 5);
+    const player = new Player(100, 10);
     this.state = {
       cardsInfo: cardsInfo,
       player: player
@@ -41,10 +41,14 @@ export class App extends React.Component<any, State> {
 
   public render(): React.ReactNode {
     const { player, cardsInfo } = this.state;
+    const disableSpin = player.funds - player.stake < 0;
     return (
       <Wrapper>
-        <TopBar />
+        <TopBar
+          funds={player.funds}
+          depositFunds={this.depositFunds} />
         <SlotGrid
+          disableSpin={disableSpin}
           spin={this.spin}
           reload={this.reload}
           cardsInfo={cardsInfo} />
@@ -79,8 +83,13 @@ export class App extends React.Component<any, State> {
   }
 
   private spin(): void {
+    const { player } = this.state;
     this.state.cardsInfo.cards.forEach(x => {
       this.revealCard(x);
+    });
+    const newPlayer = new Player(player.funds - player.stake, player.stake);
+    this.setState({
+      player: newPlayer
     });
   }
 

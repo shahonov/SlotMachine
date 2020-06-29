@@ -1,26 +1,16 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import plus from '../assets/plus.svg';
-import minus from '../assets/minus.svg';
 import { Player } from '../models/Player';
-import { IconPulse } from '../styled-components/Icons';
+import { TextField, InputLabel, Slider } from '@material-ui/core';
+import { CenterFlex } from '../styled-components/Containters';
 
-const Label = styled.label`
-    font-family: monospace;
+const Wrapper = styled(CenterFlex)`
+    width: 25%;
 `;
 
-const Input = styled.input`
-    font-family: monospace;
-    width: 30px;
-    text-align: center;
-`;
-
-const SmallIcon = styled(IconPulse)`
-    width: 25px;
-    margin-bottom: -6px;
-    &:hover {
-        cursor: pointer;
-    }
+const RowWrapper = styled(CenterFlex)`
+    width: 100%;
+    justify-content: space-between;
 `;
 
 export interface Props {
@@ -36,34 +26,46 @@ export class BottomBar extends React.Component<Props> {
     constructor(props: any) {
         super(props);
 
-        this.increaseStake = this.increaseStake.bind(this);
-        this.decreaseStake = this.decreaseStake.bind(this);
+        this.changeStake = this.changeStake.bind(this);
     }
 
     public render(): React.ReactNode {
         const { player, isAllRevealed, winCoefficient } = this.props;
         return (
-            <>
-                <Label>Funds: </Label>
-                <Input readOnly={true} value={player.funds} />
-                <Label>Stake: </Label>
-                <SmallIcon src={minus} alt={'decrease-stake'} onClick={this.decreaseStake} />
-                <Input readOnly={true} value={player.stake} />
-                <SmallIcon src={plus} alt={'increase-stake'} onClick={this.increaseStake} />
-                <div>Win coefficient: {isAllRevealed ? winCoefficient : 'click spin...'}</div>
-            </>
+            <Wrapper>
+                <RowWrapper>
+                    <Slider
+                        step={10}
+                        min={10}
+                        max={100}
+                        marks={true}
+                        value={player.stake}
+                        valueLabelDisplay={"auto"}
+                        onChange={this.changeStake} />
+                </RowWrapper>
+                <RowWrapper>
+                    <InputLabel htmlFor={'stake-input'}>Stake: </InputLabel>
+                    <TextField id={'stake-input'} size={'small'} value={player.stake} variant={"outlined"} />
+                </RowWrapper>
+                {
+                    isAllRevealed &&
+                    <>
+                    <RowWrapper>
+                        <InputLabel htmlFor={'coefficient-input'}>Coefficient: </InputLabel>
+                        <TextField id={'coefficient-input'} size={'small'} value={winCoefficient} variant={"outlined"} />
+                    </RowWrapper>
+                    <RowWrapper>
+                        <InputLabel htmlFor={'win-amount-input'}>Win Amount: </InputLabel>
+                        <TextField id={'win-amount-input'} size={'small'} value={0} variant={"outlined"} />
+                    </RowWrapper>
+                    </>
+                }
+            </Wrapper>
         );
     }
 
-    private increaseStake(): void {
-        const { changeStake, player } = this.props;
-        const newStake = player.stake + 5;
-        changeStake(newStake);
-    }
-
-    private decreaseStake(): void {
-        const { changeStake, player } = this.props;
-        const newStake = player.stake - 5;
-        changeStake(newStake);
+    private changeStake(ev: React.ChangeEvent<{}>, value: number | number[]): void {
+        const { changeStake } = this.props;
+        changeStake(+value);
     }
 }

@@ -20,6 +20,7 @@ const ButtonWrapper = styled(CenterFlex)`
 export interface Props {
     spin: () => void;
     reload: () => void;
+    disableSpin: boolean;
     cardsInfo: CardsInfo;
 }
 
@@ -50,7 +51,31 @@ export class SlotGrid extends React.Component<Props> {
     }
 
     private getIcons(): React.ReactNode {
-        const { spin, reload } = this.props;
+        const { spin, reload, disableSpin } = this.props;
+        if (disableSpin && this.allCardsReady) {
+            return (
+                <>
+                    <ButtonWrapper>
+                        <IconSpinPulse className={'disabled'} onClick={spin} src={spinIcon} alt={'spin-button'} />
+                    </ButtonWrapper>
+                    <ButtonWrapper>
+                        <IconSpinPulse onClick={reload} src={reloadIcon} alt={'reload-button'} />
+                    </ButtonWrapper>
+                </>
+            );
+        } else if (disableSpin && this.allCardsLoading) {
+            return (
+                <>
+                    <ButtonWrapper>
+                        <IconSpinPulse className={'disabled'} onClick={spin} src={spinIcon} alt={'spin-button'} />
+                    </ButtonWrapper>
+                    <ButtonWrapper>
+                        <IconSpinPulse className={'disabled'} onClick={reload} src={reloadIcon} alt={'reload-button'} />
+                    </ButtonWrapper>
+                </>
+            );
+        }
+
         if (this.someLoadingSomeReady) {
             return (
                 <>
