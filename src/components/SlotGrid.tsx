@@ -1,11 +1,10 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { SlotRow } from './SlotRow';
-import info from '../assets/info.svg';
 import spinIcon from '../assets/spin.svg';
 import reloadIcon from '../assets/reload.svg';
 import { CardsInfo } from '../models/CardsInfo';
-import { IconSpinPulse, IconHoverPulse } from '../styled-components/Icons';
+import { IconSpinPulse } from '../styled-components/Icons';
 import { CenterFlex } from '../styled-components/Containters';
 
 const Wrapper = styled(CenterFlex)`
@@ -32,9 +31,6 @@ export class SlotGrid extends React.Component<Props> {
             <Wrapper>
                 <CenterFlex>
                     {this.getIcons()}
-                    <ButtonWrapper>
-                        <IconHoverPulse src={info} alt={'info'} />
-                    </ButtonWrapper>
                 </CenterFlex>
                 <div>
                     <SlotRow coefficient={cardsInfo.row1Coefficient}

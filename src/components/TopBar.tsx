@@ -1,13 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Button, InputLabel, TextField } from '@material-ui/core';
-import { Slider } from '@material-ui/core';
+import { Slider, Button, InputLabel, TextField } from '@material-ui/core';
 import { CenterFlex } from '../styled-components/Containters';
-
-const Wrapper = styled(CenterFlex)`
-    width: 25%;
-    margin-bottom: 20px;
-`;
 
 const RowWrapper = styled(CenterFlex)`
     width: 100%;
@@ -41,7 +35,7 @@ export class TopBar extends React.Component<Props, State> {
         const { localFunds } = this.state;
         const { funds } = this.props;
         return (
-            <Wrapper>
+            <>
                 <Slider
                     step={50}
                     min={0}
@@ -57,7 +51,7 @@ export class TopBar extends React.Component<Props, State> {
                     <InputLabel htmlFor={'funds-input'}>Funds</InputLabel>
                     <TextField id={'funds-input'} size={'small'} value={funds} variant={"outlined"} />
                 </RowWrapper>
-            </Wrapper>
+            </>
         );
     }
 

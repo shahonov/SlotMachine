@@ -1,12 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Player } from '../models/Player';
 import { TextField, InputLabel, Slider } from '@material-ui/core';
+import { Player } from '../models/Player';
 import { CenterFlex } from '../styled-components/Containters';
-
-const Wrapper = styled(CenterFlex)`
-    width: 25%;
-`;
 
 const RowWrapper = styled(CenterFlex)`
     width: 100%;
@@ -32,7 +28,7 @@ export class BottomBar extends React.Component<Props> {
     public render(): React.ReactNode {
         const { player, isAllRevealed, winCoefficient } = this.props;
         return (
-            <Wrapper>
+            <>
                 <RowWrapper>
                     <Slider
                         step={10}
@@ -50,17 +46,17 @@ export class BottomBar extends React.Component<Props> {
                 {
                     isAllRevealed &&
                     <>
-                    <RowWrapper>
-                        <InputLabel htmlFor={'coefficient-input'}>Coefficient: </InputLabel>
-                        <TextField id={'coefficient-input'} size={'small'} value={winCoefficient} variant={"outlined"} />
-                    </RowWrapper>
-                    <RowWrapper>
-                        <InputLabel htmlFor={'win-amount-input'}>Win Amount: </InputLabel>
-                        <TextField id={'win-amount-input'} size={'small'} value={0} variant={"outlined"} />
-                    </RowWrapper>
+                        <RowWrapper>
+                            <InputLabel htmlFor={'coefficient-input'}>Coefficient: </InputLabel>
+                            <TextField id={'coefficient-input'} size={'small'} value={winCoefficient} variant={"outlined"} />
+                        </RowWrapper>
+                        <RowWrapper>
+                            <InputLabel htmlFor={'win-amount-input'}>Win Amount: </InputLabel>
+                            <TextField id={'win-amount-input'} size={'small'} value={player.stake * winCoefficient} variant={"outlined"} />
+                        </RowWrapper>
                     </>
                 }
-            </Wrapper>
+            </>
         );
     }
 
